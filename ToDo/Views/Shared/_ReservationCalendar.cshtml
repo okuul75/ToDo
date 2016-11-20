@@ -1,0 +1,91 @@
+﻿@{
+    DateTime firstDay = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+    int daysInCurrentMonth = DateTime.DaysInMonth(firstDay.Year, firstDay.Month);
+    DateTime lastDay = new DateTime(DateTime.Now.Year, DateTime.Now.Month, daysInCurrentMonth);
+    // Sunday casted to int gives 0 but that will not work for us, we need 7 to be able to calculate number of empty cells correctly
+    int dayOfWeekFirst = ((int)firstDay.DayOfWeek > 0) ? (int)firstDay.DayOfWeek : 7;
+    int dayOfWeekLast = ((int)lastDay.DayOfWeek > 0) ? (int)lastDay.DayOfWeek : 7;
+    int currentMonth = DateTime.Now.Month;
+}
+
+<table id="reservationCalendar">
+    <thead>
+        <tr>
+            <td>
+                <<
+            </td>
+            <td colspan="5">
+                @currentMonth @firstDay.Year
+            </td>
+            <td>
+                >>
+            </td>
+        </tr>
+    </thead>
+    <tr>
+        <td>
+            Mon 
+        </td>
+        <td>
+            Tue 
+        </td>
+        <td>
+            Wed 
+        </td>
+        <td>
+            Thu 
+        </td>
+        <td>
+            Fri 
+        </td>
+        <td>
+            Sat 
+        </td>
+        <td>
+            Sun 
+        </td>
+    </tr>
+
+
+    <tr>
+        <!-- filling up space of previous month -->
+        @for (int a = 1; a < dayOfWeekFirst; a++)
+        {
+            @:
+            <td></td>
+        }
+
+        <!-- filling up space of current month -->
+        @for (int i = 1; i <= daysInCurrentMonth; i++)
+        {
+            DateTime renderedDay = new DateTime(firstDay.Year, firstDay.Month, i);
+
+            // if Sunday
+            if (renderedDay.DayOfWeek == DayOfWeek.Sunday)
+            {
+                @:
+                <td class="calendar-holiday">@i</td>
+
+        <tr></tr>
+            }
+            // if Saturday
+            else if (renderedDay.DayOfWeek == DayOfWeek.Saturday)
+            {
+                @:
+                <td class="calendar-holiday">@i</td>
+            }
+            // if normal day
+            else
+            {
+                @:
+                <td>@i</td>
+            }
+        }
+        <!-- filling up space of next month -->
+        @for (int a = 1; a <= 7 - dayOfWeekLast; a++)
+        {
+            @:
+            <td></td>
+        }
+    </tr>
+</table>

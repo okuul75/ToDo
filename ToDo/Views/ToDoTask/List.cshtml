@@ -1,0 +1,16 @@
+﻿@using ToDo.Domain.Entities
+@using ToDo.Controllers
+@model ToDo.Models.ToDoTasksListViewModel
+
+@{
+    ViewBag.Title = "Zadania";
+}
+
+@foreach(var p in Model.ToDoTasks)
+{
+    @Html.Partial("ToDoTaskSummary", p)
+}
+
+<div class="btn-group pull-right">
+        @Html.PageLinks(Model.PagingInfo, x => Url.Action("List", new { page = x, state = Model.CurrentState }))
+</div>

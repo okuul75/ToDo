@@ -1,0 +1,110 @@
+﻿@model ToDo.Domain.Entities.ToDoTask
+
+@{
+    ViewBag.Title = "Administracja: edycja";
+    Layout = "~/Views/Shared/_CrudLayout.cshtml";
+}
+
+@section Scripts {
+        <script type="text/javascript">
+                                    $(function () {
+                                        $('#ToDoTaskDate').datetimepicker({
+                                          defaultDate: '@Model.RealizationDate',
+                                          format: 'L',
+                                          showClose: true,
+                                          showClear: true,
+                                          toolbarPlacement: 'top'
+                                    });
+
+                                   $('#ToDoTaskStartTime').datetimepicker({
+                                      defaultDate: '@Model.RealizationDate',
+                                      format: 'LT',
+                                      showClose: true,
+                                      showClear: true,
+                                      toolbarPlacement: 'top',
+                                      stepping: 15
+                                    });
+                                  });
+        </script>
+    }
+@section Body{
+<div class="panel">
+    <div class="panel-heading">
+        Edytuj:
+    </div>
+
+    @using (Html.BeginForm("Edit", "Crud", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+        <div class="panel-body">
+            @Html.HiddenFor(m => m.TaskID)
+
+            @foreach (var property in ViewData.ModelMetadata.Properties)
+            {
+                if (property.PropertyName != "TaskID")
+                {
+                    <div class="form-group">
+                        <label>@(property.DisplayName ?? property.PropertyName)</label>
+                        
+                        @if (property.PropertyName == "Description")
+                        {
+                            @Html.TextArea(property.PropertyName, null, new { @class = "form-control", rows = 5 })
+                        }
+                        else if (property.PropertyName == "RealizationState")
+                        {
+                            @Html.CheckBox(property.PropertyName, false)
+                        }
+                        else if (property.PropertyName == "CreatingDate")
+                        {
+                            @Html.TextBox(property.PropertyName, null, DateTime.Now.ToString())
+                        }
+
+                        else if (property.PropertyName == "RealizationDate")
+                        {
+
+                            @*<div class="container">
+                                <div class="row">
+                                    <div class='col-sm-6'>
+                                        <div class="form-group">
+                                            <div class='input-group date' id='datetimepicker1'>
+                                                <input type='text' class="form-control" />
+                                                <span class="input-group-addon">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <script type="text/javascript">
+                                        $(function () {
+                                            $('#datetimepicker1').datetimepicker();
+                                        });
+                                    </script>
+                                </div>
+                            </div>*@
+
+                            @Html.TextBox(property.PropertyName, null)
+
+                            @*@Html.TextBox(property.PropertyName, null, DateTime.Now.ToString())*@
+
+                            @*@Html.Partial("_ReservationCalendar")*@
+                        }
+
+
+
+                        else
+                        {
+                            @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
+                        }
+                    </div>
+                }
+            }
+
+        </div>
+
+        <div class="panel-footer">
+            <input type="submit" value="Zapisz" class="btn btn-primary" />
+            @Html.ActionLink("Anuluj", "Index", null, new { @class = "btn btn-default" })
+        </div>
+    }
+</div>
+
+}

@@ -1,0 +1,73 @@
+﻿@model IEnumerable<ToDo.Domain.Entities.ToDoTask>
+
+@{
+    ViewBag.Title = "Administracja";
+    Layout = "~/Views/Shared/_CrudLayout.cshtml";
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            $('#ToDoTaskDate').datetimepicker({
+                defaultDate: @DateTime.Now.ToString(),
+                format: 'L',
+                showClose: true,
+                showClear: true,
+                toolbarPlacement: 'top'
+            });
+
+            $('#ToDoTaskStartTime').datetimepicker({
+                defaultDate: @DateTime.Now.ToString(),
+                format: 'LT',
+                showClose: true,
+                showClear: true,
+                toolbarPlacement: 'top',
+                stepping: 15
+            });
+        });
+    </script>
+}
+@section Body{
+<div class="panel panel-default">
+    <div class="navbar navbar-inverse" role="navigation">
+        <a class="navbar-brand" href="#">Edycja zadań</a>
+        <a class="navbar-brand pull-right" href="~/ToDoTask/List">Powrót do strony głównej</a>
+    </div>
+
+    <div class="panel-body">
+        <table class="table table-striped table-condensed table-bordered">
+            <tr>
+                @*<th>ID</th>*@
+                <th>Data utworzenia</th>
+                <th>Data realiacji</th>
+                <th>Zrealizowane</th>
+                <th>Edytuj</th>
+                <th>Usuń</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    @*<td>@item.TaskID</td>*@
+                    <td>@item.CreatingDate</td>
+                    <td>@item.RealizationDate</td>
+                    <td>@item.RealizationState</td>
+                    <td>
+                        @Html.ActionLink(item.Description, "Edit", new { item.TaskID })
+                    </td>
+                    <td>
+                       @using (Html.BeginForm("Delete", "Crud"))
+                       {
+                        @Html.Hidden("TaskID", item.TaskID)
+                        <input type="submit" class="btn btn-default btn-warning" value="Usuń" />
+                       }
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="panel-footer">
+        @Html.ActionLink("Utwórz nowe zadanie", "Create", null, new { @class = "btn btn-default btn-success" })
+    </div>
+</div>
+}

@@ -1,0 +1,23 @@
+﻿@model IEnumerable<string>
+
+@Html.ActionLink("Wszystkie", "List", "ToDoTask", null,
+        new { @class = "btn btn-block btn-default btn-lg" })
+
+@foreach (var link in Model)
+{
+    @Html.RouteLink(
+        link == "False" ? "Do zrealizowania" : "Zrealizowane",
+        new
+        {
+            controller = "ToDoTask",
+            action = "List",
+            state = link,
+            page = 1
+        },
+        new
+        {
+            @class = "btn btn-block btn-default btn-lg"
+                    + (link == ViewBag.SelectedState ? "btn-primary" : "")
+        }
+    )
+}

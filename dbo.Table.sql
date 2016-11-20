@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[ToDoTask]
+(
+	TaskID INT NOT NULL PRIMARY KEY IDENTITY
+	,CreatingDate SMALLDATETIME NOT NULL
+	,RealizationDate SMALLDATETIME NOT NULL
+	,RealizationState BIT NOT NULL
+	,Description NVARCHAR(500) NOT NULL
+)
