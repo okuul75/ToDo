@@ -5,24 +5,47 @@
 <!DOCTYPE html>
 
 <html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <link href="~/Content/bootstrap.css" rel="stylesheet" />
-    <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
-    <link href="~/Content/ErrorStyles.css" rel="stylesheet" />
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <link href="~/Content/bootstrap.css" rel="stylesheet" />
+        <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
+        <link href="~/Content/ErrorStyles.css" rel="stylesheet" />
+    
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/datetime")
+        @RenderSection("Scripts", required: false)
+    
+        <title></title>
 
-    @RenderSection("Scripts")
-    <title></title>
-</head>
-<body>
-    <div>
-        @if(TempData["message"] != null)
-        {
-            <div class="alert alert-success">@TempData["message"]</div>
-        }
+        <style type="text/css">
+            .field.validation-error {
+                color: red;
+            }
 
-        @*@RenderBody()*@
-    @RenderSection("Body")
-    </div>
-</body>
+            .validation-summary-errors {
+                color: red;
+                font-weight: bold;
+            }
+
+            .input-validation-error {
+                border: 2px solid #f00;
+                /*background-color: red;*/
+            }
+
+            input[type="checkbox"].input-validation-error {
+                outline: 2px #f00;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            @if (TempData["message"] != null)
+            {
+                <div class="alert alert-success">@TempData["message"]</div>
+            }
+
+                @RenderSection("Body")
+        </div>
+    </body>
 </html>

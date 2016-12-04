@@ -6,7 +6,14 @@ namespace ToDo.Domain.Concrete
 {
     public class EFToDoTaskRepository : IToDoTaskRepository
     {
-        private EFDbContext context = new EFDbContext();
+        private IDbContext context;
+
+        public EFToDoTaskRepository(IDbContext contextParam)
+        {
+            context = contextParam;
+        }
+
+        //private EFDbContext context = new EFDbContext();
 
         public IEnumerable<ToDoTask> ToDoTasks
         {

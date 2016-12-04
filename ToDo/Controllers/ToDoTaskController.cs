@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using System.Web.Mvc;
 using ToDo.Domain.Abstract;
-using ToDo.Domain.Entities;
 using ToDo.Models;
 
 namespace ToDo.Controllers
@@ -16,7 +12,7 @@ namespace ToDo.Controllers
 
         public ToDoTaskController(IToDoTaskRepository toDoTaskRepository)
         {
-            this.repository = toDoTaskRepository;
+           repository = toDoTaskRepository;
         }
 
         public ViewResult List(string state, int page = 1)
@@ -25,7 +21,7 @@ namespace ToDo.Controllers
             {
                 ToDoTasks = repository.ToDoTasks
                     .Where(p => state == null || p.RealizationState.ToString() == state)
-                    .OrderBy(p => p.TaskID)
+                    .OrderBy(p => p.RealizationDate)
                     .Skip((page - 1) * PageSize)
                     .Take(PageSize),
                     PagingInfo = new PagingInfo

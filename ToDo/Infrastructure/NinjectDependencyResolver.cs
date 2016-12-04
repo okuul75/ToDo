@@ -35,14 +35,15 @@ namespace ToDo.Infrastructure
         {
             Mock<IToDoTaskRepository> mock = new Mock<IToDoTaskRepository>();
             mock.Setup(m => m.ToDoTasks).Returns(new List<ToDoTask> {
-            new ToDoTask{Description = "zadanie 1", CreatingDate = System.DateTime.Now, RealizationDate = System.DateTime.Now, RealizationState = false},
-            new ToDoTask{Description = "zadanie 2", CreatingDate = System.DateTime.Now, RealizationDate = System.DateTime.Now, RealizationState = false},
-            new ToDoTask{Description = "zadanie 3", CreatingDate = System.DateTime.Now, RealizationDate = System.DateTime.Now, RealizationState = false}
-
-            });
+                new ToDoTask{Description = "zadanie 1", CreatingDate = System.DateTime.Now, RealizationDate = System.DateTime.Now, RealizationState = false},
+                new ToDoTask{Description = "zadanie 2", CreatingDate = System.DateTime.Now, RealizationDate = System.DateTime.Now, RealizationState = false},
+                new ToDoTask{Description = "zadanie 3", CreatingDate = System.DateTime.Now, RealizationDate = System.DateTime.Now, RealizationState = false}
+                });
 
             //kernel.Bind<IToDoTaskRepository>().ToConstant(mock.Object);
             kernel.Bind<IToDoTaskRepository>().To<EFToDoTaskRepository>();
+
+            kernel.Bind<IDbContext>().To<EFDbContext>();
         }
     }
 }

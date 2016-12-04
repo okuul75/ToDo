@@ -6,27 +6,8 @@
 }
 
 @section Scripts {
-    <script type="text/javascript">
-        $(function () {
-            $('#ToDoTaskDate').datetimepicker({
-                defaultDate: @DateTime.Now.ToString(),
-                format: 'L',
-                showClose: true,
-                showClear: true,
-                toolbarPlacement: 'top'
-            });
-
-            $('#ToDoTaskStartTime').datetimepicker({
-                defaultDate: @DateTime.Now.ToString(),
-                format: 'LT',
-                showClose: true,
-                showClear: true,
-                toolbarPlacement: 'top',
-                stepping: 15
-            });
-        });
-    </script>
 }
+
 @section Body{
 <div class="panel panel-default">
     <div class="navbar navbar-inverse" role="navigation">
@@ -39,7 +20,7 @@
             <tr>
                 @*<th>ID</th>*@
                 <th>Data utworzenia</th>
-                <th>Data realiacji</th>
+                <th>Data realizacji</th>
                 <th>Zrealizowane</th>
                 <th>Edytuj</th>
                 <th>Usuń</th>

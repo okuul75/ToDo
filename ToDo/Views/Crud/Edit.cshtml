@@ -6,103 +6,90 @@
 }
 
 @section Scripts {
-        <script type="text/javascript">
-                                    $(function () {
-                                        $('#ToDoTaskDate').datetimepicker({
-                                          defaultDate: '@Model.RealizationDate',
-                                          format: 'L',
-                                          showClose: true,
-                                          showClear: true,
-                                          toolbarPlacement: 'top'
-                                    });
+    <script type="text/javascript">
+            $(function () {
+                $('#ToDoTaskDate').datetimepicker({
+                    minDate: @Model.CreatingDate,
+                    format: 'L',
+                    showClose: true,
+                    showClear: true,
+                    toolbarPlacement: 'top',
+                    todayBtn: 'linked'
+                });
 
-                                   $('#ToDoTaskStartTime').datetimepicker({
-                                      defaultDate: '@Model.RealizationDate',
-                                      format: 'LT',
-                                      showClose: true,
-                                      showClear: true,
-                                      toolbarPlacement: 'top',
-                                      stepping: 15
-                                    });
-                                  });
-        </script>
-    }
+                $('#ToDoTaskStartTime').datetimepicker({
+                    minDate: @Model.CreatingDate,
+                    format: 'LT',
+                    showClose: true,
+                    showClear: true,
+                    toolbarPlacement: 'top',
+                    stepping: 15,
+                    todayBtn: 'linked'
+                });
+            });
+    </script>
+}
+
 @section Body{
 <div class="panel">
     <div class="panel-heading">
-        Edytuj:
+        <h3><strong>Edytuj</strong></h3>
     </div>
 
     @using (Html.BeginForm("Edit", "Crud", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()
+
         <div class="panel-body">
-            @Html.HiddenFor(m => m.TaskID)
+            <div class="form-group">
 
-            @foreach (var property in ViewData.ModelMetadata.Properties)
-            {
-                if (property.PropertyName != "TaskID")
-                {
-                    <div class="form-group">
-                        <label>@(property.DisplayName ?? property.PropertyName)</label>
-                        
-                        @if (property.PropertyName == "Description")
-                        {
-                            @Html.TextArea(property.PropertyName, null, new { @class = "form-control", rows = 5 })
-                        }
-                        else if (property.PropertyName == "RealizationState")
-                        {
-                            @Html.CheckBox(property.PropertyName, false)
-                        }
-                        else if (property.PropertyName == "CreatingDate")
-                        {
-                            @Html.TextBox(property.PropertyName, null, DateTime.Now.ToString())
-                        }
+                @Html.HiddenFor(m => m.TaskID)
 
-                        else if (property.PropertyName == "RealizationDate")
-                        {
+                @Html.Label("Data utworzenia")
+                <br/>
+                @Html.TextBoxFor(m => m.CreatingDate)
+                <br/>
+                <br/>
 
-                            @*<div class="container">
-                                <div class="row">
-                                    <div class='col-sm-6'>
-                                        <div class="form-group">
-                                            <div class='input-group date' id='datetimepicker1'>
-                                                <input type='text' class="form-control" />
-                                                <span class="input-group-addon">
-                                                    <span class="glyphicon glyphicon-calendar"></span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <script type="text/javascript">
-                                        $(function () {
-                                            $('#datetimepicker1').datetimepicker();
-                                        });
-                                    </script>
+                @Html.Label("Zrealizowane ?")
+                <br/>
+                @Html.CheckBoxFor(m => m.RealizationState, false)
+                <br/>
+                <br/>
+
+                @Html.Label("Data realizacji")
+                <br />    
+                <br/>
+                <div class="container">
+                    <div class="row">
+                        <div class='col-sm-6'>
+                            <div class="form-group">
+                                <div class='input-group date' id='ToDoTaskDate'>
+                                        @Html.TextBoxFor(m => m.RealizationDate, new {@class= "input-group-addon form-control", id = "ToDoTaskDate" })
                                 </div>
-                            </div>*@
-
-                            @Html.TextBox(property.PropertyName, null)
-
-                            @*@Html.TextBox(property.PropertyName, null, DateTime.Now.ToString())*@
-
-                            @*@Html.Partial("_ReservationCalendar")*@
-                        }
-
-
-
-                        else
-                        {
-                            @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
-                        }
+                            </div>
+                        </div>
+                            
+                        <script type="text/javascript">
+                        $(function () {
+                            $('#ToDoTaskDate').datetimepicker({
+                                format: "YYYY-MM-DD HH:mm"
+                            });
+                        });
+                        </script>
                     </div>
-                }
-            }
+                </div>
+                <br/>
+                
+                @Html.Label("Opis")
+                @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = 5 })
+            </div>
 
-        </div>
-
-        <div class="panel-footer">
-            <input type="submit" value="Zapisz" class="btn btn-primary" />
-            @Html.ActionLink("Anuluj", "Index", null, new { @class = "btn btn-default" })
+            <div class="panel-footer">
+                <input type="submit" value="Zapisz" class="btn btn-primary" />
+                @Html.ActionLink("Anuluj", "Index", null, new { @class = "btn btn-default" })
+            </div>
         </div>
     }
 </div>

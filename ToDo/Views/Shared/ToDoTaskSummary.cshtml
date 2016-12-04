@@ -1,5 +1,14 @@
 ﻿@model ToDo.Domain.Entities.ToDoTask
+@{
+    string className = "label-danger";
+    string textSpan = "Nie";
 
+    if (Model.RealizationState.ToString() == "True")
+    {
+        className = "label-success";
+        textSpan = "Tak";
+    }
+}
 <div class="well">
     <h3>
         <strong>Do kiedy: @Model.RealizationDate</strong>
@@ -8,15 +17,8 @@
         Utworzono: @Model.CreatingDate
         <span class="pull-right">
             Zrealizowano:
-            @if (Model.RealizationState.ToString() == "True")
-            {
-                <span class="label label-success"> Tak </span>
-            }
-            else
-            {
-                <span class="label label-danger"> Nie </span>
-            }
-        </span> 
+            <span class="label @className"> @textSpan </span>
+        </span>
     </h5>
     <span class="lead">@Model.Description</span>
 </div>

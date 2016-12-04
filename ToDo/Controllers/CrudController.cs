@@ -16,7 +16,8 @@ namespace ToDo.Controllers
         
         public ViewResult Index()
         {
-            return View(repository.ToDoTasks);
+            return View(repository.ToDoTasks
+                .OrderBy(p => p.RealizationDate));
         }
 
         // Crud/Edit
@@ -28,9 +29,19 @@ namespace ToDo.Controllers
 
         // POST: Crud/Edit
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(ToDoTask task)
         {
-            if(ModelState.IsValid)
+            if (string.IsNullOrEmpty(task.Description))
+            {
+                ModelState.AddModelError("Description", "Uzupełnij opis");
+            }
+            if (ModelState.IsValidField("RealizationDate") && task.RealizationDate < task.CreatingDate)
+            {
+                ModelState.AddModelError("RealizationDate", "Data realizacji musi być późniejsza niż utworzenia");
+            }
+
+            if (ModelState.IsValid)
             {
                 repository.SaveTask(task);
                 TempData["message"] = string.Format("Zapisano zadanie");
@@ -45,7 +56,33 @@ namespace ToDo.Controllers
         // Crud/Create
         public ViewResult Create()
         {
-            return View("Edit", new ToDoTask());
+            return View("Create", new ToDoTask());
+        }
+
+        // POST: Crud/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(ToDoTask task)
+        {
+            if (string.IsNullOrEmpty(task.Description))
+            {
+                ModelState.AddModelError("Description", "Uzupełnij opis");
+            }
+            if (ModelState.IsValidField("RealizationDate") && task.RealizationDate < task.CreatingDate)
+            {
+                ModelState.AddModelError("RealizationDate", "Data realizacji musi być późniejsza niż utworzenia");
+            }
+
+            if (ModelState.IsValid)
+            {
+                repository.SaveTask(task);
+                TempData["message"] = string.Format("Zapisano nowe zadanie");
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(task);
+            }
         }
 
         // POST: Crud/Delete
